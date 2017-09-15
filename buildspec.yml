@@ -15,7 +15,7 @@ phases:
       - export IMAGE_TAG=${CODEBUILD_RESOLVED_SOURCE_VERSION}
       - docker tag pseudobeer-deploy-ecs-demoimage:latest ${ECR_URL}/pseudobeer-deploy-ecs-demoimage:${IMAGE_TAG}
       - docker push ${ECR_URL}/pseudobeer-deploy-ecs-demoimage:${IMAGE_TAG}
-      - echo "image_tag = \"${IMAGE_TAG}\"\n" > /codebuild/variables.tf
+      - echo "image_tag = \"${IMAGE_TAG}\"" > /codebuild/variables.tf
 
 artifacts:
   type: none
