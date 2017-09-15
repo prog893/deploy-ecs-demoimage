@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - apt-get update
+
+  build:
+    commands:
+      - pwd
+      - BASE_FOLDER=$(pwd)/
+      - cd ${BASE_FOLDER}
+      - $(aws ecr get-login --no-include-email --region ${AWS_REGION}) 
+      - docker build -t pseudobeer-deploy-ecs-demoimage .
+      - export IMAGE_TAG='XXXX'
+      - docker tag pseudobeer-deploy-ecs-demoimage:latest ${ECR_URL}/pseudobeer-deploy-ecs-demoimage:${IMAGE_TAG}
+      - docker push ${ECR_URL}/pseudobeer-deploy-ecs-demoimage:${IMAGE_TAG}
+      - echo "image_tag = \"${IMAGE_TAG}\"\n" > /codebuild/variables.tf
+
+artifacts:
+  type: none
+  files:
+    - /codebuild/variables.tf
+  discard-paths: yes
